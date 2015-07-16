@@ -8,6 +8,14 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
   :recoverable, :rememberable, :trackable, :validatable, :confirmable, authentication_keys: [:email, :group_key]
 
+  def name
+    "#{family_name}#{first_name}"
+  end
+
+  def name_kana
+    "#{family_name_kana}#{first_name_kana}"
+  end
+
   #association
   belongs_to :group
 
