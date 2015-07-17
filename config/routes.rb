@@ -1,10 +1,17 @@
 Rails.application.routes.draw do
+  get 'groups/show'
+
+  get 'groups/edit'
+
+  get 'groups/update'
+
   get 'users/show'
 
   devise_for :users
   get 'top/index'
   root :to =>'top#index'
   resources :users, :only => [:show, :edit, :update]
+  resources :groups, only: [:show, :edit, :update]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
   :recoverable, :rememberable, :trackable, :validatable, :confirmable, authentication_keys: [:email, :group_key]
 
+  # paperclip
+  has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>"}
+  validates_attachment_content_type :avatar, content_type: %w(image/jpeg image/jpg image/png)
+
   def name
     "#{family_name}#{first_name}"
   end
@@ -15,6 +19,10 @@ class User < ActiveRecord::Base
   def name_kana
     "#{family_name_kana}#{first_name_kana}"
   end
+
+  def full_profile?
+  avatar? && family_name? && first_name? && family_name_kana? && first_name_kana?
+end
 
   #association
   belongs_to :group
@@ -27,7 +35,7 @@ class User < ActiveRecord::Base
     group_key = conditions.delete(:group_key)
     group_id = Group.where(key: group_key).first
     email = conditions.delete(:email)
- 
+
     # devise認証を、複数項目に対応させる
     if group_id && email
       where(conditions).where(["group_id = :group_id AND email = :email",
@@ -38,12 +46,12 @@ class User < ActiveRecord::Base
       false
     end
   end
- 
+
   private
   def has_group_key?
     group_key.present?
   end
- 
+
   def group_key_to_id
     group = Group.where(key: group_key).first_or_create
     self.group_id = group.id
