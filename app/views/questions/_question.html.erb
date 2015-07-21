@@ -12,11 +12,17 @@
       <span class="question_text"><%= question.text %></span>
     </div>
     <div class="questioned">
-      <span>回答<%= question.answers.count %>件</span>
+      <%= link_to "回答#{question.answers.count}件", question_path(question) %>
     </div>
+    <% unless question.answers.exists?(user_id: current_user.id) %> 
     <%= form_tag(new_answer_path, method: :get, class: "question_submit") do %>
       <%= hidden_field_tag(:question_id, question.id) %>
       <%= submit_tag("回答する") %>
+    <% end %>
+    <% else %>
+      <div class="answer_other">
+        <h4>※回答済み※</h4>
+      </div>
     <% end %>
   </div>
 </div>
