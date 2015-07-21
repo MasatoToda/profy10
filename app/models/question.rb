@@ -10,6 +10,7 @@ class Question < ActiveRecord::Base
       Answer.find_by(user_id: user_id, question_id: id)
       #このidって何？
       #question_idカラムの値が「メソッドを呼び出した元の質問のid」と一致する回答
+      #呼び出し元はquestion("users/_questionファイルから")
       #「question_id: id」 の id という部分は、self.id の self を省略した形です。
   end
 end
