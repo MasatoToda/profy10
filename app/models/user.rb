@@ -32,6 +32,7 @@ end
 
 
   #validation
+  validates :family_name, presence: true, on: :update
   before_validation :group_key_to_id, if: :has_group_key?
 
   def self.find_first_by_auth_conditions(warden_conditions)
